@@ -34,7 +34,7 @@ public class JwtTest {
      */
     @Test
     public void testParseToken() {
-        String token = "eyJhbGciOiJIUzUxMiJ9.eyJtb2JpbGUiOiIxMzgwMDEzODAwMCIsImlkIjoxLCJleHAiOjE2MTgzOTcxOTV9.2lQiovogL5tJa0px4NC-DW7zwHFqZuwhnL0HPAZunieGphqnMPduMZ5TtH_mxDrgfiskyAP63d8wzfwAj-MIVw";
+        String token = "eyJhbGciOiJIUzUxMiJ9.eyJtb2JpbGUiOiIxMzgwMDEzODAwMCIsImlkIjoxLCJleHAiOjE2ODA2MDAyNjF9.jJVtP43KhhbHw50LUM_Cf3jdaH18RGfM71iWZsV41Dnhye-TmbxrUGTqOplsh8WZgb9u2VH9-8XrF62Bj-puKQ";
         try {
             Claims claims = Jwts.parser()
                     .setSigningKey("itcast")

@@ -21,7 +21,7 @@ public class LoginController {
      * 获取登录验证码
      *   请求参数：phone （Map）
      *   响应：void
-     * ResponseEntity
+     * ResponseEntity是Spring提供的响应实体对象，状态码设置，可以个性化
      */
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody Map map){
