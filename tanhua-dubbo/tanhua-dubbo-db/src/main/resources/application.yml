@@ -7,11 +7,11 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/tanhua?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
     username: root
-    password: root
+    password: xxj753896
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.136.160:8848
+        server-addr: localhost:8848
 dubbo:
   protocol:
     name: dubbo
