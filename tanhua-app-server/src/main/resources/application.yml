@@ -6,12 +6,10 @@ spring:
     name: tanhua-app-server
   redis:  #redis配置
     port: 6379
-#    host: 192.168.136.160
     host: localhost
   cloud:  #nacos配置
     nacos:
       discovery:
-#        server-addr: 192.168.136.160:8848
         server-addr: localhost:8848
 dubbo:    #dubbo配置
   registry:
@@ -24,3 +22,13 @@ tanhua:
     templateCode: SMS_106590012
     accessKey: LTAI4GKgob9vZ53k2SZdyAC7
     secret: LHLBvXmILRoyw0niRSBuXBZewQ30la
+  oss:
+    accessKey: LTAI5tHTqJf7xBtu72YvcPqc
+    secret: H3ApUOyIh7y57tAVK4FyjRMAtpvQaz
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    bucketName: tanhua-jamison
+    url: https://tanhua-jamison.oss-cn-hangzhou.aliyuncs.com/
+  aip:
+    appId: 32114926
+    apiKey: Pns9SUFAt1HrWhyGGPKgjOPs
+    secretKey: eD0jgzjPGrrmFGzY8dHEOHxCqxcWfGnn

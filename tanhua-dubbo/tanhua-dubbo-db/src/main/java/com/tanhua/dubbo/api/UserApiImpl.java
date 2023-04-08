@@ -7,7 +7,6 @@ import com.tanhua.model.domain.User;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-//dubbo需要暴露服务
 @DubboService
 public class UserApiImpl  implements UserApi{
 
