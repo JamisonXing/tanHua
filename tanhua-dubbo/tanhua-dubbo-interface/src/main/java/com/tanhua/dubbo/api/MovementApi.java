@@ -3,6 +3,8 @@ package com.tanhua.dubbo.api;
 import com.tanhua.model.mongo.Movement;
 import com.tanhua.model.vo.PageResult;
 
+import java.util.List;
+
 public interface MovementApi {
 
     //发布动态
@@ -10,4 +12,7 @@ public interface MovementApi {
 
     //根据用户id，查询此用户发布的动态数据列表
     PageResult findByUserId(Long userId, Integer page, Integer pagesize);
+
+    //根据用户id，查询用户好友发布的动态列表
+    List<Movement> findFriendMovements(Integer page, Integer pagesize, Long userId);
 }

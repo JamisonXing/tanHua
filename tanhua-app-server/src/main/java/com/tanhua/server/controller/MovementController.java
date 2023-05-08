@@ -38,4 +38,14 @@ public class MovementController {
         return ResponseEntity.ok(pr);
     }
 
+    /**
+     * 查询好友动态
+     */
+    @GetMapping
+    public ResponseEntity movements(@RequestParam(defaultValue = "1") Integer page,
+                                    @RequestParam(defaultValue = "10") Integer pagesize) {
+        PageResult pr = movementService.findFriendMovements(page, pagesize);
+        return ResponseEntity.ok(pr);
+    }
+
 }

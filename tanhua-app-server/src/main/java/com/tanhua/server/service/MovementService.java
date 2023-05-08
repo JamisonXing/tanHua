@@ -1,5 +1,6 @@
 package com.tanhua.server.service;
 
+import cn.hutool.core.collection.CollUtil;
 import com.tanhua.autoconfig.template.OssTemplate;
 import com.tanhua.dubbo.api.MovementApi;
 import com.tanhua.dubbo.api.UserInfoApi;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MovementService {
@@ -76,5 +78,32 @@ public class MovementService {
         //6、构建返回值
         pr.setItems(vos);
         return pr;
+    }
+
+    //查询好友动态
+    public PageResult findFriendMovements(Integer page, Integer pagesize) {
+        //1. 获取当前用户id
+        Long userId = UserHolder.getUserId();
+        //2. 调用API查询当前好友发布的动态列表
+        List<Movement> list = movementApi.findFriendMovements(page, pagesize, userId);
+        //3. 判断列表是否为空
+        if(CollUtil.isEmpty(list)) {
+            return new PageResult();
+        }
+        //4. 提取动态发布人的id列表
+        List<Long> userIds = CollUtil.getFieldValues(list, "userId", Long.class);
+        //5. 根据用户的ID列表获取用户详情
+        Map<Long, UserInfo> map = userInfoApi.findByIds(userIds, null);
+        //6. 一个movement构造一个vo对象
+        List<MovementsVo> vos = new ArrayList<>();
+        for(Movement movement : list) {
+            UserInfo userInfo = map.get(movement.getUserId());
+            if(userInfo != null) {
+                MovementsVo vo = MovementsVo.init(userInfo, movement);
+                vos.add(vo);
+            }
+        }
+        //7. 构造PageResult并返回
+        return new PageResult(page, pagesize, 0L, vos);
     }
 }
