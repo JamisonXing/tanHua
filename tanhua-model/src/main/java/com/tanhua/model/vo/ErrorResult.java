@@ -33,4 +33,8 @@ public class ErrorResult {
     public static ErrorResult mobileError() {
         return ErrorResult.builder().errCode("000004").errMessage("手机号码已注册").build();
     }
+
+    public static ErrorResult contentError() {
+        return ErrorResult.builder().errCode("000005").errMessage("动态内容为空").build();
+    }
 }

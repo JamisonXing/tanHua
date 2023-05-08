@@ -1,26 +1,16 @@
 package com.itheima.test;
 
 import com.baidu.aip.face.AipFace;
-import com.tanhua.autoconfig.template.AipFaceTemplate;
 import org.json.JSONObject;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 
 public class FaceTest {
-    @Autowired
-    private AipFaceTemplate aipFaceTemplate;
 
-    @Test
-    public void detect() {
-        boolean detect = aipFaceTemplate.detect("https://tanhua-jamison.oss-cn-hangzhou.aliyuncs.com/2023/04/07/f2420997-6e90-45b8-862d-82d3c8bc5295.png");
-        System.out.println(detect);
-    }
     //设置APPID/AK/SK
-    public static final String APP_ID = "32114926";
-    public static final String API_KEY = "Pns9SUFAt1HrWhyGGPKgjOPs";
-    public static final String SECRET_KEY = "eD0jgzjPGrrmFGzY8dHEOHxCqxcWfGnn";
+    public static final String APP_ID = "24021388";
+    public static final String API_KEY = "ZnMTwoETXnu4OPIGwGAO2H4G";
+    public static final String SECRET_KEY = "D4jXShyinv5q26bUS78xRKgNLnB9IfZh";
 
     public static void main(String[] args) {
         // 初始化一个AipFace
@@ -32,7 +22,7 @@ public class FaceTest {
 
 
         // 调用接口
-        String image = "https://tanhua-jamison.oss-cn-hangzhou.aliyuncs.com/2023/04/07/7bfe5fb3-d74d-4f9c-bf6f-beb9b914f597.png";
+        String image = "https://tanhua001.oss-cn-beijing.aliyuncs.com/2021/04/19/a3824a45-70e3-4655-8106-a1e1be009a5e.jpg";
         String imageType = "URL";
 
         HashMap<String, String> options = new HashMap<String, String>();

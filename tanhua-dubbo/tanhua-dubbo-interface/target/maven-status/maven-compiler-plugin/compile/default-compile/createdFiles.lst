@@ -1,0 +1,7 @@
+com/tanhua/dubbo/api/BlackListApi.class
+com/tanhua/dubbo/api/UserInfoApi.class
+com/tanhua/dubbo/api/RecommendUserApi.class
+com/tanhua/dubbo/api/MovementApi.class
+com/tanhua/dubbo/api/UserApi.class
+com/tanhua/dubbo/api/QuestionApi.class
+com/tanhua/dubbo/api/SettingsApi.class

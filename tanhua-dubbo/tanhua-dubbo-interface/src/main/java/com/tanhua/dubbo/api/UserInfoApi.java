@@ -2,6 +2,9 @@ package com.tanhua.dubbo.api;
 
 import com.tanhua.model.domain.UserInfo;
 
+import java.util.List;
+import java.util.Map;
+
 public interface UserInfoApi {
 
     public void save(UserInfo userInfo);
@@ -10,4 +13,10 @@ public interface UserInfoApi {
 
     //根据id查询
     UserInfo findById(Long id);
+
+    /**
+     * 批量查询用户详情
+     *    返回值：Map<id,UserInfo>
+     */
+    Map<Long,UserInfo> findByIds(List<Long> userIds,UserInfo info);
 }

@@ -26,6 +26,7 @@ public class UserController {
     public ResponseEntity loginReginfo(@RequestBody UserInfo userInfo,
                                        @RequestHeader("Authorization") String token) {
         //2、向userinfo中设置用户id
+
         userInfo.setId(UserHolder.getUserId());
         //3、调用service
         userInfoService.save(userInfo);

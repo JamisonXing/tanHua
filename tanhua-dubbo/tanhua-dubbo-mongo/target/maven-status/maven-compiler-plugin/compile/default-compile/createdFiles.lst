@@ -1,0 +1,5 @@
+com/tanhua/dubbo/DubboMongoApplication.class
+com/tanhua/dubbo/utils/TimeLineService.class
+com/tanhua/dubbo/utils/IdWorker.class
+com/tanhua/dubbo/api/RecommendUserApiImpl.class
+com/tanhua/dubbo/api/MovementApiImpl.class

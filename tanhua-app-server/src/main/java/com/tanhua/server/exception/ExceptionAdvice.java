@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  *  3、方法上编写注解，指定此方法可以处理的异常类型
  */
 @ControllerAdvice
-public class  ExceptionAdvice {
+public class ExceptionAdvice {
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity handlerException(BusinessException be) {

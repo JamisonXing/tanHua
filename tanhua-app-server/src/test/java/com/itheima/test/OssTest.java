@@ -27,7 +27,7 @@ public class OssTest {
 
     @Test
     public void testTemplateUpload() throws FileNotFoundException {
-        String path = "/Users/jamison/notebook/interview/mysql/assets/image-20230407144559218.png";
+        String path = "C:\\Users\\lemon\\Desktop\\课程资源\\02-完善用户信息\\03-资料\\2.jpg";
         FileInputStream inputStream = new FileInputStream(new File(path));
         String imageUrl = template.upload(path, inputStream);
         System.out.println(imageUrl);
@@ -43,7 +43,7 @@ public class OssTest {
     public void testOss() throws FileNotFoundException {
 
         //1、配置图片路径
-        String path = "/Users/jamison/notebook/interview/mysql/assets/image-20230407144559218.png";
+        String path = "C:\\Users\\lemon\\Desktop\\课程资源\\02-完善用户信息\\03-资料\\1.jpg";
         //2、构造FileInputStream
         FileInputStream inputStream = new FileInputStream(new File(path));
         //3、拼写图片路径
@@ -52,22 +52,22 @@ public class OssTest {
 
 
         // yourEndpoint填写Bucket所在地域对应的Endpoint。以华东1（杭州）为例，Endpoint填写为https://oss-cn-hangzhou.aliyuncs.com。
-        String endpoint = "oss-cn-hangzhou.aliyuncs.com";
+        String endpoint = "oss-cn-beijing.aliyuncs.com";
         // 阿里云主账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建RAM账号。
-        String accessKeyId = "LTAI5tHTqJf7xBtu72YvcPqc";
-        String accessKeySecret = "H3ApUOyIh7y57tAVK4FyjRMAtpvQaz";
+        String accessKeyId = "LTAI4GKgob9vZ53k2SZdyAC7";
+        String accessKeySecret = "LHLBvXmILRoyw0niRSBuXBZewQ30la";
 
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId,accessKeySecret);
 
         // 填写Byte数组。
         // 填写Bucket名称和Object完整路径。Object完整路径中不能包含Bucket名称。
-        ossClient.putObject("tanhua-jamison", filename, inputStream);
+        ossClient.putObject("tanhua001", filename, inputStream);
 
         // 关闭OSSClient。
         ossClient.shutdown();
 
-        String url = "https://tanhua-jamison.oss-cn-hangzhou.aliyuncs.com" + filename;
+        String url = "https://tanhua001.oss-cn-beijing.aliyuncs.com/" + filename;
         System.out.println(url);
     }
 }
