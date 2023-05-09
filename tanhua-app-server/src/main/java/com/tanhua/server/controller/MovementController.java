@@ -48,4 +48,13 @@ public class MovementController {
         return ResponseEntity.ok(pr);
     }
 
+    /**
+     * 查询推荐动态
+     */
+    @GetMapping("/recommend")
+    public ResponseEntity recommend(@RequestParam(defaultValue = "1") Integer page,
+                                    @RequestParam(defaultValue = "10") Integer pagesize) {
+        PageResult pr = movementService.findRecommendMovements(page, pagesize);
+        return ResponseEntity.ok(pr);
+    }
 }
