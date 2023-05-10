@@ -139,4 +139,17 @@ public class MovementService {
         //6. 调用公共方法构造返回值
         return getPageResult(page, pagesize, list);
     }
+
+    //根据id查询动态
+    public MovementsVo findById(String movementId) {
+        //1. 调用api根据id查询动态详情
+        Movement movement = movementApi.findById(movementId);
+        //2. 转化vo对象
+        if(movement != null) {
+            UserInfo userInfo = userInfoApi.findById(movement.getUserId());
+            return MovementsVo.init(userInfo, movement);
+        } else {
+            return null;
+        }
+    }
 }

@@ -101,4 +101,10 @@ public class MovementApiImpl implements MovementApi{
         Query query = Query.query(Criteria.where("pid").in(pids));
         return mongoTemplate.find(query, Movement.class);
     }
+
+    //根据id查询
+    @Override
+    public Movement findById(String movementId) {
+        return mongoTemplate.findById(movementId, Movement.class);
+    }
 }
