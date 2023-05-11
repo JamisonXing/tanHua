@@ -117,27 +117,28 @@ public class MovementService {
 
     //查询推荐动态
     public PageResult findRecommendMovements(Integer page, Integer pagesize) {
-        //1. 从Redis中获取推荐数据
-        String redisKey = Constants.MOVEMENTS_RECOMMEND + UserHolder.getUserId();
+        //1、从redis中获取推荐数据
+        String redisKey = Constants.MOVEMENTS_RECOMMEND +UserHolder.getUserId();
         String redisValue = redisTemplate.opsForValue().get(redisKey);
-        //2. 判断推荐数据是否存在
+        //2、判断推荐数据是否存在
         List<Movement> list = Collections.EMPTY_LIST;
         if(StringUtils.isEmpty(redisValue)) {
-            //3. 如果不存在，调用API随机构建10条动态数据
+            //3、如果不存在，调用API随机构造10条动态数据
             list = movementApi.randomMovements(pagesize);
-        } else {
-            //4. 如果存在，处理pid数据
+        }else {
+            //4、如果存在，处理pid数据   "16,17,18,19,20,21,10015,10020,10040,10064,10092,10093,10099,10067" 15
             String[] values = redisValue.split(",");
-            if((page - 1) * pagesize < values.length) {
-                List<Long> pids = Arrays.asList(values).stream().skip((page - 1) * pagesize).limit(pagesize)
-                        .map(e -> Long.valueOf(e))
+            //判断当前页的起始条数是否小于数组总数
+            if( (page -1) * pagesize < values.length) {
+                List<Long> pids = Arrays.stream(values).skip((page - 1) * pagesize).limit(pagesize)
+                        .map(e->Long.valueOf(e))
                         .collect(Collectors.toList());
-                //5. 调用API根据PID数组查询动态数据
+                //5、调用API根据PID数组查询动态数据
                 list = movementApi.findMovementsByPids(pids);
             }
         }
-        //6. 调用公共方法构造返回值
-        return getPageResult(page, pagesize, list);
+        //6、调用公共方法构造返回值
+        return getPageResult(page,pagesize,list);
     }
 
     //根据id查询动态
