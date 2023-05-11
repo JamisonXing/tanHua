@@ -36,6 +36,7 @@ public class CommentsService {
         comment1.setPublishId(new ObjectId(movementId));
         comment1.setCommentType(CommentType.COMMENT.getType());
         comment1.setContent(comment);
+        comment1.setUserId(userId);
         comment1.setCreated(System.currentTimeMillis());
         //3. 调用Api保存评论
         Integer commentCount = commentApi.save(comment1);
@@ -63,6 +64,6 @@ public class CommentsService {
             }
         }
         //5. 构造返回值
-        return new PageResult(page, pagesize, 0L, vos);
+        return new PageResult(page, pagesize, 0l, vos);
     }
 }
