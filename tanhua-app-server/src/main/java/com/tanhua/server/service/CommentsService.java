@@ -21,6 +21,7 @@ import java.util.Map;
 @Service
 @Slf4j
 public class CommentsService {
+
     @DubboReference
     private CommentApi commentApi;
 
@@ -64,6 +65,6 @@ public class CommentsService {
             }
         }
         //5. 构造返回值
-        return new PageResult(page, pagesize, 0l, vos);
+        return new PageResult(page, pagesize, 0L, vos);
     }
 }
