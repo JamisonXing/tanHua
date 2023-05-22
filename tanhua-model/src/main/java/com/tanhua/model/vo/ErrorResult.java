@@ -37,4 +37,12 @@ public class ErrorResult {
     public static ErrorResult contentError() {
         return ErrorResult.builder().errCode("000005").errMessage("动态内容为空").build();
     }
+
+    public static ErrorResult likeError() {
+        return ErrorResult.builder().errCode("000006").errMessage("用户已点赞").build();
+    }
+
+    public static ErrorResult disLikeError() {
+        return ErrorResult.builder().errCode("000007").errMessage("用户未点赞").build();
+    }
 }

@@ -3,6 +3,7 @@ package com.tanhua.server.controller;
 import com.tanhua.model.mongo.Movement;
 import com.tanhua.model.vo.MovementsVo;
 import com.tanhua.model.vo.PageResult;
+import com.tanhua.server.service.CommentsService;
 import com.tanhua.server.service.MovementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,9 @@ public class MovementController {
 
     @Autowired
     private MovementService movementService;
+
+    @Autowired
+    private CommentsService commentsService;
 
     /**
      * 发布动态
@@ -66,5 +70,14 @@ public class MovementController {
     public ResponseEntity findById(@PathVariable("id") String movementId) {
         MovementsVo vo = movementService.findById(movementId);
         return ResponseEntity.ok(vo);
+    }
+
+    /**
+     * 点赞
+     */
+    @GetMapping("/{id}/like")
+    public ResponseEntity like(@PathVariable("id") String movementId) {
+        Integer likeCount = commentsService.likeComment(movementId);
+        return ResponseEntity.ok(likeCount);
     }
 }

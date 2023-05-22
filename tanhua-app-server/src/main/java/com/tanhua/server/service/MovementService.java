@@ -108,6 +108,12 @@ public class MovementService {
             UserInfo userInfo = map.get(movement.getUserId());
             if(userInfo != null) {
                 MovementsVo vo = MovementsVo.init(userInfo, movement);
+                //修复点赞状态的bug，判断hashKey是否存在
+                String key = Constants.MOVEMENTS_INTERACT_KEY + movement.getId().toHexString();
+                String hashKey = Constants.MOVEMENT_LIKE_HASHKEY + UserHolder.getUserId();
+                if(redisTemplate.opsForHash().hasKey(key, hashKey)) {
+                    vo.setHasLiked(1);
+                }
                 vos.add(vo);
             }
         }

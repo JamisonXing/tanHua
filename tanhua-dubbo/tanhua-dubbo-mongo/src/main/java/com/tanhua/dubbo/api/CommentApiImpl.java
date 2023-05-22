@@ -63,4 +63,13 @@ public class CommentApiImpl implements CommentApi{
         //2. 查询并返回
         return mongoTemplate.find(query, Comment.class);
     }
+
+    @Override
+    public Boolean hasComment(String movementId, Long userId, CommentType commentType) {
+        Criteria criteria = Criteria.where("userId").is(userId)
+                .and("publishId").is(new ObjectId(movementId))
+                .and("commentType").is(commentType.getType());
+        Query query = Query.query(criteria);
+        return mongoTemplate.exists(query,Comment.class);
+    }
 }

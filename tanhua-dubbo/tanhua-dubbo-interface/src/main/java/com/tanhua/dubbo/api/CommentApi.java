@@ -12,4 +12,7 @@ public interface CommentApi {
 
     //分页查询评论列表
     List<Comment> findComments(String movementId, CommentType commentType, Integer page, Integer pagesize);
+
+    //动态点赞
+    Boolean hasComment(String movementId, Long userId, CommentType commentType);
 }

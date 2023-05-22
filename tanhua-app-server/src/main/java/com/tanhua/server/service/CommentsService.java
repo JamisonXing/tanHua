@@ -1,17 +1,22 @@
 package com.tanhua.server.service;
 
 import cn.hutool.core.collection.CollUtil;
+import com.tanhua.commons.utils.Constants;
 import com.tanhua.dubbo.api.CommentApi;
 import com.tanhua.dubbo.api.UserInfoApi;
 import com.tanhua.model.domain.UserInfo;
 import com.tanhua.model.enums.CommentType;
 import com.tanhua.model.mongo.Comment;
 import com.tanhua.model.vo.CommentVo;
+import com.tanhua.model.vo.ErrorResult;
 import com.tanhua.model.vo.PageResult;
+import com.tanhua.server.exception.BusinessException;
 import com.tanhua.server.interceptor.UserHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +32,9 @@ public class CommentsService {
 
     @DubboReference
     private UserInfoApi userInfoApi;
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     //发布评论
     public void saveComments(String movementId, String comment) {
@@ -66,5 +74,27 @@ public class CommentsService {
         }
         //5. 构造返回值
         return new PageResult(page, pagesize, 0L, vos);
+    }
+
+    //动态点赞
+    public Integer likeComment(String movementId) {
+        //1、调用API查询用户是否已点赞
+        Boolean hasComment = commentApi.hasComment(movementId,UserHolder.getUserId(),CommentType.LIKE);
+        //2、如果已经点赞，抛出异常
+        if(hasComment) {
+            throw  new BusinessException(ErrorResult.likeError());
+        }
+        //3、调用API保存数据到Mongodb
+        Comment comment = new Comment();
+        comment.setPublishId(new ObjectId(movementId));
+        comment.setCommentType(CommentType.LIKE.getType());
+        comment.setUserId(UserHolder.getUserId());
+        comment.setCreated(System.currentTimeMillis());
+        Integer count = commentApi.save(comment);
+        //4、拼接redis的key，将用户的点赞状态存入redis
+        String key = Constants.MOVEMENTS_INTERACT_KEY + movementId;
+        String hashKey = Constants.MOVEMENT_LIKE_HASHKEY + UserHolder.getUserId();
+        redisTemplate.opsForHash().put(key,hashKey,"1");
+        return count;
     }
 }
