@@ -97,4 +97,26 @@ public class CommentsService {
         redisTemplate.opsForHash().put(key,hashKey,"1");
         return count;
     }
+
+    //取消点赞
+    public Integer dislikeComment(String movementId) {
+        //1、调用API查询用户是否已经点赞了
+        Boolean hasComment = commentApi.hasComment(movementId,UserHolder.getUserId(),CommentType.LIKE);
+        //2. 如果未点赞，抛出异常
+        if(!hasComment) {
+            throw  new BusinessException(ErrorResult.disLikeError());
+        }
+        //3.调用API，删除数据，返回点赞数量
+        Comment comment = new Comment();
+        comment.setPublishId(new ObjectId(movementId));
+        comment.setCommentType(CommentType.LIKE.getType());
+        comment.setUserId(UserHolder.getUserId());
+        comment.setCreated(System.currentTimeMillis());
+        Integer count = commentApi.delete(comment);
+        //4. 拼接redis key删除点赞状态
+        String key = Constants.MOVEMENTS_INTERACT_KEY + movementId;
+        String hashKey = Constants.MOVEMENT_LIKE_HASHKEY + UserHolder.getUserId();
+        redisTemplate.opsForHash().delete(key, hashKey);
+        return count;
+    }
 }

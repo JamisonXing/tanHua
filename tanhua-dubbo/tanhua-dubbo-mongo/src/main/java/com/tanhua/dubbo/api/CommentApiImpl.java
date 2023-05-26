@@ -64,12 +64,39 @@ public class CommentApiImpl implements CommentApi{
         return mongoTemplate.find(query, Comment.class);
     }
 
-    @Override
+    //判断comment数据是否存在
     public Boolean hasComment(String movementId, Long userId, CommentType commentType) {
         Criteria criteria = Criteria.where("userId").is(userId)
                 .and("publishId").is(new ObjectId(movementId))
                 .and("commentType").is(commentType.getType());
         Query query = Query.query(criteria);
         return mongoTemplate.exists(query,Comment.class);
+    }
+
+    //删除
+    @Override
+    public Integer delete(Comment comment) {
+        //1. 删除Comment表数据
+        Criteria criteria = Criteria.where("userId").is(comment.getUserId())
+                .and("publishId").is(comment.getPublishId())
+                .and("commentType").is(comment.getCommentType());
+        Query query = Query.query(criteria);
+        mongoTemplate.remove(query,Comment.class);
+        //2、修改动态表中的总数量
+        Query movementQuery = Query.query(Criteria.where("id").is(comment.getPublishId()));
+        Update update = new Update();
+        if(comment.getCommentType() == CommentType.LIKE.getType()) {
+            update.inc("likeCount",-1);
+        }else if (comment.getCommentType() == CommentType.COMMENT.getType()){
+            update.inc("commentCount",-1);
+        }else {
+            update.inc("loveCount",-1);
+        }
+        //设置更新参数
+        FindAndModifyOptions options = new FindAndModifyOptions();
+        options.returnNew(true) ;//获取更新后的最新数据
+        Movement modify = mongoTemplate.findAndModify(movementQuery, update, options, Movement.class);
+        //5、获取最新的评论数量，并返回
+        return modify.statisCount(comment.getCommentType() );
     }
 }

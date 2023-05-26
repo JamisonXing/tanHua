@@ -15,4 +15,7 @@ public interface CommentApi {
 
     //动态点赞
     Boolean hasComment(String movementId, Long userId, CommentType commentType);
+
+    //删除comment数据
+    Integer delete(Comment comment);
 }
