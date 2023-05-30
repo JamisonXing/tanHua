@@ -38,9 +38,4 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         return true;
     }
-
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        UserHolder.remove();
-    }
 }

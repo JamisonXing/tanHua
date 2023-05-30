@@ -45,4 +45,12 @@ public class ErrorResult {
     public static ErrorResult disLikeError() {
         return ErrorResult.builder().errCode("000007").errMessage("用户未点赞").build();
     }
+
+    public static ErrorResult loveError() {
+        return ErrorResult.builder().errCode("000008").errMessage("用户已喜欢").build();
+    }
+
+    public static ErrorResult disloveError() {
+        return ErrorResult.builder().errCode("000009").errMessage("用户未喜欢").build();
+    }
 }

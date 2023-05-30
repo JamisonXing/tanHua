@@ -49,7 +49,7 @@ public class MovementController {
     @GetMapping
     public ResponseEntity movements(@RequestParam(defaultValue = "1") Integer page,
                                     @RequestParam(defaultValue = "10") Integer pagesize) {
-        PageResult pr = movementService.findFriendMovements(page, pagesize);
+        PageResult pr = movementService.findFriendMovements(page,pagesize);
         return ResponseEntity.ok(pr);
     }
 
@@ -59,7 +59,7 @@ public class MovementController {
     @GetMapping("/recommend")
     public ResponseEntity recommend(@RequestParam(defaultValue = "1") Integer page,
                                     @RequestParam(defaultValue = "10") Integer pagesize) {
-        PageResult pr = movementService.findRecommendMovements(page, pagesize);
+        PageResult pr = movementService.findRecommendMovements(page,pagesize);
         return ResponseEntity.ok(pr);
     }
 
@@ -87,6 +87,24 @@ public class MovementController {
     @GetMapping("/{id}/dislike")
     public ResponseEntity dislike(@PathVariable("id") String movementId) {
         Integer likeCount = commentsService.dislikeComment(movementId);
+        return ResponseEntity.ok(likeCount);
+    }
+
+    /**
+     * 喜欢
+     */
+    @GetMapping("/{id}/love")
+    public ResponseEntity love(@PathVariable("id") String movementId) {
+        Integer likeCount = commentsService.loveComment(movementId);
+        return ResponseEntity.ok(likeCount);
+    }
+
+    /**
+     * 取消喜欢
+     */
+    @GetMapping("/{id}/unlove")
+    public ResponseEntity unlove(@PathVariable("id") String movementId) {
+        Integer likeCount = commentsService.disloveComment(movementId);
         return ResponseEntity.ok(likeCount);
     }
 }

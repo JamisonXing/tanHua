@@ -16,7 +16,7 @@ public class IdWorkerTest {
 
     @Test
     public void test() {
-        Long id = idWorker.getNextId("test2");
+        Long id = idWorker.getNextId("test");
         System.out.println(id);
     }
 }

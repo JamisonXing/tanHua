@@ -36,7 +36,7 @@ public class MovementService {
     private UserInfoApi userInfoApi;
 
     @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    private RedisTemplate<String,String> redisTemplate;
 
     /**
      * 发布动态
@@ -86,39 +86,39 @@ public class MovementService {
 
     //查询好友动态
     public PageResult findFriendMovements(Integer page, Integer pagesize) {
-        //1. 获取当前用户id
+        //1、获取当前用户的id
         Long userId = UserHolder.getUserId();
-        //2. 调用API查询当前好友发布的动态列表
-        List<Movement> list = movementApi.findFriendMovements(page, pagesize, userId);
+        //2、调用API查询当前用户好友发布的动态列表
+        List<Movement> list = movementApi.findFriendMovements(page,pagesize,userId);
+        //3、判断列表是否为空
         return getPageResult(page, pagesize, list);
     }
 
     private PageResult getPageResult(Integer page, Integer pagesize, List<Movement> list) {
-        //3. 判断列表是否为空
         if(CollUtil.isEmpty(list)) {
             return new PageResult();
         }
-        //4. 提取动态发布人的id列表
+        //4、提取动态发布人的id列表
         List<Long> userIds = CollUtil.getFieldValues(list, "userId", Long.class);
-        //5. 根据用户的ID列表获取用户详情
+        //5、根据用户的id列表获取用户详情
         Map<Long, UserInfo> map = userInfoApi.findByIds(userIds, null);
-        //6. 一个movement构造一个vo对象
+        //6、一个Movement构造一个vo对象
         List<MovementsVo> vos = new ArrayList<>();
-        for(Movement movement : list) {
+        for (Movement movement : list) {
             UserInfo userInfo = map.get(movement.getUserId());
             if(userInfo != null) {
                 MovementsVo vo = MovementsVo.init(userInfo, movement);
                 //修复点赞状态的bug，判断hashKey是否存在
                 String key = Constants.MOVEMENTS_INTERACT_KEY + movement.getId().toHexString();
-                String hashKey = Constants.MOVEMENT_LIKE_HASHKEY + UserHolder.getUserId();
-                if(redisTemplate.opsForHash().hasKey(key, hashKey)) {
+                String hashKey = Constants.MOVEMENT_LOVE_HASHKEY + UserHolder.getUserId();
+                if(redisTemplate.opsForHash().hasKey(key,hashKey)) {
                     vo.setHasLiked(1);
                 }
                 vos.add(vo);
             }
         }
-        //7. 构造PageResult并返回
-        return new PageResult(page, pagesize, 0L, vos);
+        //7、构造PageResult并返回
+        return new PageResult(page, pagesize,0l,vos);
     }
 
     //查询推荐动态
@@ -147,15 +147,15 @@ public class MovementService {
         return getPageResult(page,pagesize,list);
     }
 
-    //根据id查询动态
+    //根据id查询
     public MovementsVo findById(String movementId) {
-        //1. 调用api根据id查询动态详情
+        //1、调用api根据id查询动态详情
         Movement movement = movementApi.findById(movementId);
-        //2. 转化vo对象
+        //2、转化vo对象
         if(movement != null) {
             UserInfo userInfo = userInfoApi.findById(movement.getUserId());
-            return MovementsVo.init(userInfo, movement);
-        } else {
+            return MovementsVo.init(userInfo,movement);
+        }else {
             return null;
         }
     }

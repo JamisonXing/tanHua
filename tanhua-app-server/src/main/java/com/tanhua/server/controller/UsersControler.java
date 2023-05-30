@@ -17,10 +17,9 @@ public class UsersControler {
 
     /**
      * 查询用户资料
-     *    参数：token
      */
     @GetMapping
-    public ResponseEntity users(@RequestHeader("Authorization") String token,Long userID) {
+    public ResponseEntity users(Long userID) {
         if(userID == null) {
             userID = UserHolder.getUserId();
         }
@@ -32,7 +31,7 @@ public class UsersControler {
      * 更新用户资料
      */
     @PutMapping
-    public ResponseEntity updateUserInfo(@RequestBody UserInfo userInfo,@RequestHeader("Authorization") String token) {
+    public ResponseEntity updateUserInfo(@RequestBody UserInfo userInfo) {
         userInfo.setId(UserHolder.getUserId());
         userInfoService.update(userInfo);
         return ResponseEntity.ok(null);

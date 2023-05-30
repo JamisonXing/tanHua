@@ -45,6 +45,9 @@ public class UserInfoApiImpl implements  UserInfoApi {
             if(!StringUtils.isEmpty(info.getGender())) {
                 qw.eq("gender",info.getGender());
             }
+            if(!StringUtils.isEmpty(info.getNickname())) {
+               qw.like("nickname",info.getNickname());
+            }
         }
         List<UserInfo> list = userInfoMapper.selectList(qw);
         Map<Long, UserInfo> map = CollUtil.fieldValueMap(list, "id");

@@ -1,5 +1,6 @@
 package com.tanhua.model.vo;
 
+
 import com.tanhua.model.domain.UserInfo;
 import com.tanhua.model.mongo.Comment;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class CommentVo implements Serializable {
 
     private String content; //评论
     private String createDate; //评论时间
+
     private Integer likeCount; //点赞数
     private Integer hasLiked; //是否点赞（1是，0否）
 

@@ -14,9 +14,9 @@ import java.util.List;
 public class PageResult implements Serializable {
 
     private Long counts = 0l;//总记录数
-    private Integer pagesize;//页大小
+    private Integer pagesize=10;//页大小
     private Long pages = 0l;//总页数
-    private Integer page;//当前页码
+    private Integer page=1;//当前页码
     private List<?> items = Collections.emptyList(); //列表
 
     public PageResult(Integer page,Integer pagesize,
