@@ -1,6 +1,7 @@
 package com.tanhua.server.service;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.convert.Convert;
 import com.alibaba.fastjson.JSON;
 import com.tanhua.autoconfig.template.HuanXinTemplate;
 import com.tanhua.commons.utils.Constants;
@@ -18,12 +19,15 @@ import com.tanhua.server.exception.BusinessException;
 import com.tanhua.server.interceptor.UserHolder;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static cn.hutool.core.util.RandomUtil.randomDouble;
 
 @Service
 public class TanhuaService {
@@ -39,6 +43,9 @@ public class TanhuaService {
 
     @Autowired
     private HuanXinTemplate template;
+
+    @Value("${tanhua.default.recommend.users}")
+    private String recommendUser;
 
     //查询今日佳人数据
     public TodayBest todayBest() {
@@ -158,5 +165,36 @@ public class TanhuaService {
         if(!aBoolean) {
             throw  new BusinessException(ErrorResult.error());
         }
+    }
+
+    //查询推荐用户
+    public List<TodayBest> queryCardsList() {
+        //排除已经喜欢和不喜欢的用户，有数量限制
+        List<RecommendUser> users = recommendUserApi.queryCardsList(UserHolder.getUserId(), 10);
+        //判断是否存在,不存在的话，构造默认数据（配置文件）
+        if(CollUtil.isEmpty(users)) {
+            users = new ArrayList<>();
+            String[] userIds = recommendUser.split(",");
+            for(String userId : userIds) {
+                RecommendUser recommendUser = new RecommendUser();
+                recommendUser.setUserId(Convert.toLong(userId));
+                recommendUser.setToUserId(UserHolder.getUserId());
+                recommendUser.setScore(randomDouble(60, 90));
+                users.add(recommendUser);
+            }
+        }
+        //构造VO
+        List<Long> ids = CollUtil.getFieldValues(users, "userId", Long.class);
+        Map<Long, UserInfo> infoMap = userInfoApi.findByIds(ids, null);
+
+        List<TodayBest> vos = new ArrayList<>();
+        for(RecommendUser user : users) {
+            UserInfo userInfo = infoMap.get(user.getUserId());
+            if(userInfo != null) {
+                TodayBest vo = TodayBest.init(userInfo, user);
+                vos.add(vo);
+            }
+        }
+        return vos;
     }
 }

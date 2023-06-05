@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -62,5 +63,14 @@ public class TanhuaController {
         String reply = map.get("reply").toString();
         tanhuaService.replyQuestions(userId,reply);
         return ResponseEntity.ok(null);
+    }
+
+    /**
+     * 探花查询推荐用户列表
+     */
+    @GetMapping("/cards")
+    public ResponseEntity queryCardsList() {
+        List<TodayBest> list = this.tanhuaService.queryCardsList();
+        return ResponseEntity.ok(list);
     }
 }
